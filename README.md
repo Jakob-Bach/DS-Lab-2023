@@ -54,3 +54,23 @@ To actually launch `Jupyter Notebook`, run
 ```
 jupyter notebook
 ```
+
+## Task 1: Earthquake Damage Prediction (`Task_1_Earthquake_Damage_Prediction/`)
+
+We solve the challenge ["Richter's Predictor: Modeling Earthquake Damage"](https://www.drivendata.org/competitions/57/nepal-earthquake/).
+It is an imbalanced ordinal classification/regression problem (with three classes), scored by micro-averaged F1 score (= accuracy here).
+Most features are categorical, many of them binary.
+
+### Preparation
+
+To use our code, download the files `train_values.csv`, `test_values.csv`, and `train_labels.csv`
+from the competition platform (no need to store the 4th file, which demonstrates the submission format).
+Place the data files in the folder `data/` within the current folder.
+
+### Exploration
+
+The notebook `Exploration.ipynb` contains some basic exploration (mainly statistics) of the CSVs.
+
+## Task 2a: Active Learining for SAT Solving
+
+## Task 2b: Meta-Learning for Encoder Selection
