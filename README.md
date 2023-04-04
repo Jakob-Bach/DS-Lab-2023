@@ -71,6 +71,23 @@ Place the data files in the folder `data/` within the current folder.
 
 The notebook `Exploration.ipynb` contains some basic exploration (mainly statistics) of the CSVs.
 
+### Scoring
+
+The competition itself uses the micro-averaged F1 score, which corresponds to accuracy for single-label prediction.
+For course-internal scoring, we use Matthews Correlation Coefficient (MCC instead).
+
+- `split.py` creates one stratified holdout split.
+- `score.py` scores submissions for the holdout split.
+
+### Demo Submissions
+
+We provide small demo script for creating submissions.
+The submission format is valid for the competition website as well as our course-internal scoring.
+
+- `predict_majority.py` creates a baseline solution that constantly predicts the majoriy class.
+- `predict_tree.py` uses a `sklearn` decision tree (you can easily switch the model).
+  The only preprocessing is encoding of categorical features.
+
 ## Task 2a: Active Learining for SAT Solving
 
 ## Task 2b: Meta-Learning for Encoder Selection
