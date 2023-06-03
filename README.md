@@ -115,6 +115,10 @@ We invesigate a traditional "passive" as well as an active-learning scenario for
   - known satisfiablity result
   - no NAs in instance features
 
+### Exploration
+
+The notebook `Active_Learning_Demo.ipynb` demonstrates `scikit-activeml`.
+
 ### Scoring
 
 We provide a scoring mechanism for the "passive" prediction scenario, using MCC as metric:
