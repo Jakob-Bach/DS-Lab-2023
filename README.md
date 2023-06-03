@@ -76,17 +76,17 @@ The notebook `Exploration.ipynb` contains some basic exploration (mainly statist
 ### Scoring
 
 The competition itself uses the micro-averaged F1 score, which corresponds to accuracy for single-label prediction.
-For course-internal scoring, we use Matthews Correlation Coefficient (MCC instead).
+For course-internal scoring, we use Matthews Correlation Coefficient (MCC) instead.
 
 - `split.py` creates one stratified holdout split.
 - `score.py` scores submissions for the holdout split.
 
 ### Demo Submissions
 
-We provide small demo script for creating submissions.
+We provide small demo scripts for creating submissions.
 The submission format is valid for the competition website as well as our course-internal scoring.
 
-- `predict_majority.py` creates a baseline solution that constantly predicts the majoriy class.
+- `predict_majority.py` creates a baseline solution that constantly predicts the majority class.
 - `predict_tree.py` uses a `sklearn` decision tree (you can easily switch the model).
   The only preprocessing is encoding of categorical features.
 
@@ -114,5 +114,21 @@ We invesigate a traditional "passive" as well as an active-learning scenario for
   - 2022 Anniversary Track
   - known satisfiablity result
   - no NAs in instance features
+
+### Scoring
+
+We provide a scoring mechanism for the "passive" prediction scenario, using MCC as metric:
+
+- `split.py` creates one stratified holdout split for both targets, satisfiability and timeouts.
+  From the 28 available solvers, we choose the winner of the Anniversary Track for timeout prediction
+  (which is not the fastest solver on our filtered instance sample but close to it).
+- `score.py` scores submissions for the holdout split, considering both prediction targets.
+
+### Demo Submissions
+
+We provide small demo scripts for creating submissions, using the same approaches as for Task 1:
+
+- `predict_majority.py` creates a baseline solution that constantly predicts the majority class.
+- `predict_tree.py` uses a `sklearn` decision tree (you can easily switch the model) without any preprocessing.
 
 ## Task 2b: Meta-Learning for Encoder Selection
