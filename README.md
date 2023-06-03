@@ -3,8 +3,10 @@
 This is the supervisor repo of the ["Data Science Laboratory Course"](https://dbis.ipd.kit.edu/3211_3244.php) at KIT in 2023.
 Students worked on two subtasks:
 
-- a practive competition from the platform [drivendata.org](https://www.drivendata.org/)
-- one of two research tasks
+1) a practice competition from the platform [drivendata.org](https://www.drivendata.org/)
+2) one of two research tasks:
+  a) active learning for SAT solving
+  b) meta-learning for encoder selection
 
 The repo provides files for preparing the datasets, some basic exploration, course-internal splitting, scoring, and demo submissions for that.
 Additionally, `Surveys/` contains exports of questionnaires (created with ILIAS `v7`) to evaluate the students' satisfication
@@ -89,5 +91,28 @@ The submission format is valid for the competition website as well as our course
   The only preprocessing is encoding of categorical features.
 
 ## Task 2a: Active Learining for SAT Solving
+
+This task stems from the field of [SAT solving](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem).
+We use features of SAT instances from the [Global Benchmark Database (`GBD`)](https://gbd.iti.kit.edu/)
+and runtimes from the [SAT Competition 2022](https://satcompetition.github.io/2022/) `Anniversary Track`.
+We have two prediction targets:
+
+- Is the instance satisfiable or not (column `result` in database `meta`)?
+- Does a solver run into a timeout on an instance or not (based on the runtime data)?
+
+Besides exploring the data, students should use classification approaches.
+We invesigate a traditional "passive" as well as an active-learning scenario for predictions.
+
+### Preparation
+
+`prepare_data.py` pre-processes the dataset:
+
+- download databases with meta data and instance features from `GBD`
+- download runtime data from SAT-Competition website
+- merge databases
+- filter instances:
+  - 2022 Anniversary Track
+  - known satisfiablity result
+  - no NAs in instance features
 
 ## Task 2b: Meta-Learning for Encoder Selection
