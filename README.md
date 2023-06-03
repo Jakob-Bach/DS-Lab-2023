@@ -14,7 +14,7 @@ Additionally, `Surveys/` contains exports of questionnaires (created with ILIAS 
 
 ## Setup
 
-We use Python with version `3.10`.
+We use Python with version `3.8`.
 We recommend to set up a virtual environment to install the dependencies, e.g., with `virtualenv`:
 
 ```bash
@@ -24,7 +24,7 @@ python -m virtualenv -p <path/to/right/python/executable> <path/to/env/destinati
 or with `conda`:
 
 ```bash
-conda create --name ds-lab-2023 python=3.10
+conda create --name ds-lab-2023 python=3.8
 ```
 
 Next, activate the environment with either
