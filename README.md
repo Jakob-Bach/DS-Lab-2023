@@ -9,7 +9,7 @@ Students worked on two subtasks:
   b) meta-learning for encoder selection
 
 The repo provides files for preparing the datasets, some basic exploration, course-internal splitting, scoring, and demo submissions for that.
-Additionally, `Surveys/` contains exports of questionnaires (created with ILIAS `v7`) to evaluate the students' satisfication
+Additionally, `Surveys/` contains exports of questionnaires (created with ILIAS `v7`) to evaluate the students' satisfaction
 (one survey at start of course, one after first task, one after second task).
 
 ## Setup
@@ -90,7 +90,7 @@ The submission format is valid for the competition website as well as our course
 - `predict_tree.py` uses a `sklearn` decision tree (you can easily switch the model).
   The only preprocessing is encoding of categorical features.
 
-## Task 2a: Active Learining for SAT Solving
+## Task 2a: Active Learning for SAT Solving
 
 This task stems from the field of [SAT solving](https://en.wikipedia.org/wiki/Boolean_satisfiability_problem).
 We use features of SAT instances from the [Global Benchmark Database (`GBD`)](https://gbd.iti.kit.edu/)
@@ -101,7 +101,11 @@ We have two prediction targets:
 - Does a solver run into a timeout on an instance or not (based on the runtime data)?
 
 Besides exploring the data, students should use classification approaches.
-We invesigate a traditional "passive" as well as an active-learning scenario for predictions.
+We investigate a traditional "passive" as well as an active-learning scenario for predictions.
+For active learning, we consider "standard" queries (which always return a label) as well as
+"timeout" queries (which only run for a limited amount of time).
+The latter can potentially save query costs but might not return a class label
+(if the solver did not finish within the given timeout).
 
 ### Preparation
 
@@ -112,12 +116,14 @@ We invesigate a traditional "passive" as well as an active-learning scenario for
 - merge databases
 - filter instances:
   - 2022 Anniversary Track
-  - known satisfiablity result
+  - known satisfiability result
   - no NAs in instance features
 
 ### Exploration
 
-The notebook `Active_Learning_Demo.ipynb` demonstrates `scikit-activeml`.
+The notebook `Active_Learning_Demo.ipynb` demonstrates "standard" active learning with `scikit-activeml`.
+The notebook `Timeout_Active_Learning_Demo.ipynb` uses a timeout-aware active-learning oracle
+that we implemented in the module `al_oracle`, while the query strategies still originate from `scikit-activeml`.
 
 ### Scoring
 
@@ -128,9 +134,15 @@ We provide a scoring mechanism for the "passive" prediction scenario, using MCC 
   (which is not the fastest solver on our filtered instance sample but close to it).
 - `score.py` scores submissions for the holdout split, considering both prediction targets.
 
+For the active-learning scenario, we do not have dedicated splitting and scoring scripts
+since students should plot and compare complete learning curves.
+Thus, students should determine the prediction quality for each learning iteration on their own.
+For active learning with timeouts, `al_oracle.py` provides splitting and (MCC-based) scoring
+functionality in the class `ALOracle`, but there still is no scoring script.
+
 ### Demo Submissions
 
-We provide small demo scripts for creating submissions, using the same approaches as for Task 1:
+We provide small demo prediction scripts for the "passive" scenario, using the same approaches as for Task 1:
 
 - `predict_majority.py` creates a baseline solution that constantly predicts the majority class.
 - `predict_tree.py` uses a `sklearn` decision tree (you can easily switch the model) without any preprocessing.
