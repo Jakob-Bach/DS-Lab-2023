@@ -42,8 +42,8 @@ class ALOracle:
         self.__y_train = None
         self.__y_test = None
 
-    def split_data(self, dataset: pd.DataFrame, target: str, random_state: int = 25
-                   ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def split_data(self, dataset: pd.DataFrame, target: str, test_size: float = 0.2,
+                   random_state: int = 25) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """Create a holdout split
 
         Split the passed `dataset` with a (single) stratified holdout split. Use the base + gate
@@ -57,6 +57,8 @@ class ALOracle:
             dataset (pd.DataFrame): The dataset containing instance features and solver runtimes.
             target (str): The prediction target. Needs to be either "result" or one of the
                 "runtimes." features.
+            test_size (float): The fraction of instances going into the test set. Should be a
+                value in [0,1), i.e. having no test set is possible.
             random_state (int, optional): A seed to ensure reproducibility of the holdout split.
                 Defaults to 25.
 
@@ -68,6 +70,8 @@ class ALOracle:
             raise ValueError('Method expects "dataset" to be a DataFrame, not a numpy array etc.')
         if target not in dataset.columns:
             raise ValueError('Desired "target" is not a column in the "dataset".')
+        if (test_size < 0) or (test_size >= 1):
+            raise ValueError('Size of the test set should be a relative value in [0,1).')
         if target == 'result':
             dataset = dataset[dataset[DEFAULT_SOLVER] != 2 * COMPETITION_TIMEOUT]
             runtimes = dataset[DEFAULT_SOLVER]
@@ -80,9 +84,14 @@ class ALOracle:
             raise ValueError('"target" needs to be the SAT result or the runtimes of a solver.')
         assert y.isin([0, 1]).all()  # all values properly encoded
         X = dataset[[x for x in dataset.columns if x.startswith('base.') or x.startswith('gate.')]]
-        X_train, X_test, self.__y_train, self.__y_test, self.__runtimes_train, _ = \
-            sklearn.model_selection.train_test_split(X, y, runtimes, test_size=0.2, shuffle=True,
-                                                     random_state=random_state, stratify=y)
+        if test_size == 0:
+            X_train, X_test, self.__y_train, self.__y_test, self.__runtimes_train = \
+                X, None, y, None, runtimes
+        else:
+            X_train, X_test, self.__y_train, self.__y_test, self.__runtimes_train, _ = \
+                sklearn.model_selection.train_test_split(
+                    X, y, runtimes, test_size=test_size, shuffle=True, stratify=y,
+                    random_state=random_state)
         return (X_train, X_test)
 
     def query_labels(
