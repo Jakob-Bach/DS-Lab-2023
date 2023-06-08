@@ -84,6 +84,7 @@ class ALOracle:
             raise ValueError('"target" needs to be the SAT result or the runtimes of a solver.')
         assert y.isin([0, 1]).all()  # all values properly encoded
         X = dataset[[x for x in dataset.columns if x.startswith('base.') or x.startswith('gate.')]]
+        runtimes = runtimes.replace(2 * COMPETITION_TIMEOUT, COMPETITION_TIMEOUT)  # revert PAR-2 scoring
         if test_size == 0:
             X_train, X_test, self.__y_train, self.__y_test, self.__runtimes_train = \
                 X, None, y, None, runtimes
