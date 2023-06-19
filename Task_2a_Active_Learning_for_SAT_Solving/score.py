@@ -14,7 +14,7 @@ import sklearn.metrics
 import split
 
 
-DATA_DIR = pathlib.Path('data/')  # needs to contain submissions and ground truth solution
+DATA_DIR = pathlib.Path('data/scoring/')  # needs to contain submissions and ground truth solution
 
 
 def validate_submission(submission: pd.DataFrame, ground_truth: pd.DataFrame, target: str) -> str:

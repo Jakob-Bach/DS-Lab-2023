@@ -12,7 +12,7 @@ import sklearn.tree
 import split
 
 
-DATA_DIR = pathlib.Path('data/')
+DATA_DIR = pathlib.Path('data/scoring/')
 
 
 if __name__ == '__main__':
