@@ -43,7 +43,7 @@ class ALOracle:
         self.__y_test = None
 
     def split_data(self, dataset: pd.DataFrame, target: str, test_size: float = 0.2,
-                   random_state: int = 25) -> Tuple[pd.DataFrame, pd.DataFrame]:
+                   random_state: int = 25) -> Tuple[pd.DataFrame, Optional[pd.DataFrame]]:
         """Create a holdout split
 
         Split the passed `dataset` with a (single) stratified holdout split. Use the base + gate
@@ -58,13 +58,15 @@ class ALOracle:
             target (str): The prediction target. Needs to be either "result" or one of the
                 "runtimes." features.
             test_size (float): The fraction of instances going into the test set. Should be a
-                value in [0,1), i.e. having no test set is possible.
+                value in [0,1), i.e. having no test set is possible. Do not use 0.5 (or values very
+                close to it) since this messes up the scoring routine (which requires training set
+                and test set to have different sizes -- a slightly dubious design decision).
             random_state (int, optional): A seed to ensure reproducibility of the holdout split.
                 Defaults to 25.
 
         Returns:
             X_train (pd.DataFrame): The feature part of the training set.
-            X_test (pd.DataFrame): The feature part of the test set.
+            X_test (pd.DataFrame): The feature part of the test set. `None` if test_size == 0.
         """
         if not isinstance(dataset, pd.DataFrame):
             raise ValueError('Method expects "dataset" to be a DataFrame, not a numpy array etc.')
@@ -93,6 +95,8 @@ class ALOracle:
                 sklearn.model_selection.train_test_split(
                     X, y, runtimes, test_size=test_size, shuffle=True, stratify=y,
                     random_state=random_state)
+            if len(X_train) == len(X_test):
+                raise ValueError('Split creating equally-sized training/test set not allowed.')
         return (X_train, X_test)
 
     def query_labels(
